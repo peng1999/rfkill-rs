@@ -1,7 +1,11 @@
-use std::env;
-use std::path::PathBuf;
+#[cfg(not(feature = "use-bindgen"))]
+fn main() {}
 
+#[cfg(feature = "use-bindgen")]
 fn main() {
+    use std::env;
+    use std::path::PathBuf;
+
     // Tell cargo to invalidate the built crate whenever the wrapper changes
     println!("cargo:rerun-if-changed=wrapper.h");
 

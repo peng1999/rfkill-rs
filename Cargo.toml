@@ -12,4 +12,7 @@ num-derive = "0.3.3"
 num-traits = "0.2.15"
 
 [build-dependencies]
-bindgen = "0.60.1"
+bindgen = { version = "0.60.1", optional = true }
+
+[features]
+use-bindgen = [ "dep:bindgen" ]

@@ -1,14 +1,16 @@
+#[cfg(not(feature = "use-bindgen"))]
+#[allow(non_upper_case_globals)]
+#[allow(non_camel_case_types)]
+#[allow(non_snake_case)]
+pub mod sys;
+
+#[cfg(feature = "use-bindgen")]
 pub mod sys {
     #![allow(non_upper_case_globals)]
     #![allow(non_camel_case_types)]
     #![allow(non_snake_case)]
 
-    use bytemuck::{Pod, Zeroable};
-
     include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
-
-    unsafe impl Zeroable for rfkill_event {}
-    unsafe impl Pod for rfkill_event {}
 }
 
 use std::{
@@ -17,10 +19,13 @@ use std::{
     os::unix::prelude::OpenOptionsExt,
 };
 
-use bytemuck::{bytes_of, bytes_of_mut};
+use bytemuck::{bytes_of, bytes_of_mut, Pod, Zeroable};
 use num_derive::FromPrimitive;
 use num_traits::FromPrimitive;
 use sys::*;
+
+unsafe impl Zeroable for rfkill_event {}
+unsafe impl Pod for rfkill_event {}
 
 const ZERO_RFKILL_EVENT: rfkill_event = rfkill_event {
     idx: 0,
